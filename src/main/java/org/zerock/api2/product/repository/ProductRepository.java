@@ -1,5 +1,7 @@
 package org.zerock.api2.product.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +26,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @EntityGraph(attributePaths = {"tags"})
     @Query("select p from Product p where p.pno = :pno")
     Optional<Product> read2(@Param("pno") Long pno);
+
+    @EntityGraph(attributePaths = {"tags"})
+    @Query("select p from Product p")
+    Page<Product> listOld(Pageable pageable);
 
 
 }
