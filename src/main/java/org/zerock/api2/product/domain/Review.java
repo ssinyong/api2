@@ -1,10 +1,7 @@
 package org.zerock.api2.product.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
         @Index(name = "idx_review_product", columnList = "product_pno")
 })
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor //매번 같은 어노테이션은 super 클래스로 뺄수있음
 public class Review {
@@ -35,6 +33,7 @@ public class Review {
 
     @ElementCollection
     @CollectionTable(name = "tbl_review_img")
+    @Builder.Default
     private Set<ContentImage> images = new HashSet<>();
 
     //0번이 겹치지 않게
