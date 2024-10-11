@@ -1,5 +1,6 @@
 package org.zerock.api2.product.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +20,12 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     // 조회 결과가 존재할 수도 있고 존재하지 않을 수도 있으므로 Optional로 감싸 반환
     Optional<ProductReadDTO> read(@Param("pno") Long pno);
 
+    // 추가함
+    @EntityGraph(attributePaths = {"tags"})
+    @Query("select p from Product p where p.pno = :pno")
+    Optional<Product> read2(@Param("pno") Long pno);
+
 
 }
+
 

@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
 @NoArgsConstructor //매개변수가 없는 기본 생성자를 자동으로 생성
 @Getter //모든 필드에 대한 getter 메서드를 자동으로 생성
-@ToString //toString 메서드를 자동으로 생성하여 객체의 문자열 표현을 정의
+@ToString(exclude = "tags") //toString 메서드를 자동으로 생성하여 객체의 문자열 표현을 정의
 @Table(name = "tbl_product") //DB에서 'tbl_product' 테이블과 매핑됨
 public class Product {
 
@@ -29,6 +29,7 @@ public class Product {
 
     @ElementCollection
     @CollectionTable(name = "tbl_product_tag")
+    @Builder.Default //NullPointException 에러 때문에 추가함
     private Set<String> tags = new HashSet<>();
 
     public void addTag(String tag) {
