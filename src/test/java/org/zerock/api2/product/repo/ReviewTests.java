@@ -61,13 +61,13 @@ public class ReviewTests {
                 PageRequest.of(0, 10,
                         Sort.by("rno").descending());
 
-        Page<Review> result = reviewRepository.listByProduct(11L, pageable);
+        reviewRepository.listByProduct(11L, pageable);
 
-        result.getContent().forEach(review -> {
-            log.info(review);
-            log.info(review.getImages());
-            log.info("-----------------------");
-        });
+//        result.getContent().forEach(review -> {
+//            log.info(review);
+//            log.info(review.getImages());
+//            log.info("-----------------------");
+//        });
 
     }
 
