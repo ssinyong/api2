@@ -3,6 +3,7 @@ package org.zerock.api2.product.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +31,7 @@ public class Product {
     @ElementCollection
     @CollectionTable(name = "tbl_product_tag")
     @Builder.Default //NullPointException 에러 때문에 추가함
+    @BatchSize(size = 100)
     private Set<String> tags = new HashSet<>();
 
     public void addTag(String tag) {
