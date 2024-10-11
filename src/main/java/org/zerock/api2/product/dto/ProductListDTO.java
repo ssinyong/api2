@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductListDTO {
 
+    //setter를 방지하기 위해
     private Long pno;
     private String pname;
     private int price;

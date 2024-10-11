@@ -4,16 +4,20 @@ package org.zerock.api2.product.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@ToString
-@Table(name = "tbl_product")
+@Builder //Product 객체를 쉽게 생성할 수 있게 해줌
+@AllArgsConstructor //모든 필드를 매개변수로 받는 생성자를 자동으로 생성
+@NoArgsConstructor //매개변수가 없는 기본 생성자를 자동으로 생성
+@Getter //모든 필드에 대한 getter 메서드를 자동으로 생성
+@ToString //toString 메서드를 자동으로 생성하여 객체의 문자열 표현을 정의
+@Table(name = "tbl_product") //DB에서 'tbl_product' 테이블과 매핑됨
 public class Product {
 
-    @Id
+    @Id //pno 필드가 pk임을 나타냄
+    //pno가 DB에서 자동 생성, Autoincrement와 동일한 코드
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pno;
 
@@ -22,4 +26,18 @@ public class Product {
     private int price;
 
     private ProductStatus status;
+
+    @ElementCollection
+    @CollectionTable(name = "tbl_product_tag")
+    private Set<String> tags = new HashSet<>();
+
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+    public void clearTags() {
+        tags.clear();
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.zerock.api2.common.dto.PageRequestDTO;
 import org.zerock.api2.common.dto.PageResponseDTO;
+import org.zerock.api2.product.domain.Product;
 import org.zerock.api2.product.dto.ProductListDTO;
 import org.zerock.api2.product.repository.ProductRepository;
 
@@ -20,6 +21,19 @@ public class ProductTests {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Test
+    public void testInsert() {
+        Product product = Product.builder()
+                .pname("Test Product")
+                .price(3000)
+                .build();
+        product.addTag("AAA");
+        product.addTag("BBB");
+        product.addTag("CCC");
+
+        productRepository.save(product);
+    }
 
     @Test
     public void testList1() {

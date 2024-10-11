@@ -17,6 +17,7 @@ import org.zerock.api2.product.dto.ProductListDTO;
 import java.util.List;
 
 @Log4j2
+// QuerydslRepositorySupport를 상속하여 QueryDSL을 사용한 동적 쿼리 생성을 지원하는 클래스
 public class ProductSearchImpl extends QuerydslRepositorySupport implements ProductSearch {
 
 
@@ -73,16 +74,19 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
     @Override
     public Page<Product> listWithReplyCount(Pageable pageable) {
 
+        //Product와 Review 엔티티
         QProduct product = QProduct.product;
         QReview review = QReview.review;
 
+        //JPQLQuery 객체를 생성하여 Product 엔티티를 기본으로 하는 쿼리를 만듦
         JPQLQuery<Product> query = from(product);
-        query.leftJoin(review).on(review.product.eq(product)); //JOIN
-        query.groupBy(product);
+        // Review와 Product를 LEFT JOIN하여 연관된 리뷰를 가져옴
+        query.leftJoin(review).on(review.product.eq(product));
+        query.groupBy(product); // Product를 기준으로 그룹화
 
         this.getQuerydsl().applyPagination(pageable, query); //페이징처리 끝!
 
-        // reviewCnt, avgScore
+        // Review의 개수와 평균 점수를 계산하여 ProductListDTO에 매핑
         JPQLQuery<ProductListDTO> dtoJPQLQuery = query.select(
                 Projections.bean(ProductListDTO.class,
                     product.pno,
@@ -92,13 +96,15 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                     review.score.avg().coalesce(0.0).as("avgScore")
                 ));
 
+        // 쿼리를 로그에 출력
         log.info(dtoJPQLQuery);
 
+        // 쿼리를 실행하여 결과 리스트를 가져옴
         java.util.List<ProductListDTO> dtoList = dtoJPQLQuery.fetch();
 
         // dtoList.forEach(dto -> log.info(dto));
         // 축약
-        dtoList.forEach(log::info);
+        dtoList.forEach(log::info); // 각 DTO를 로그에 출력
 
 //        List<ProductListDTO> tupleList = dtoJPQLQuery.fetch();
 //

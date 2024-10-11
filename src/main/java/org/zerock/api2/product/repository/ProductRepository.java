@@ -11,9 +11,12 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductSearch {
 
+    // 특정 제품 번호(pno)를 기준으로 제품 정보를 조회하는 메서드
     @Query("select " +
+            // 새로운 ProductReadDTO 객체를 생성하여 필요한 필드만 선택
             "new org.zerock.api2.product.dto.ProductReadDTO(p.pno, p.pname, p.price,p.status) " +
             "from Product p where p.pno = :pno")
+    // 조회 결과가 존재할 수도 있고 존재하지 않을 수도 있으므로 Optional로 감싸 반환
     Optional<ProductReadDTO> read(@Param("pno") Long pno);
 
 

@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.ToString;
 
 @Entity
+//toString 메서드 자동으로 생성하되 순환 참조 방지하여 product 필드는 제외
 @ToString(exclude = "product")
 @Table(name = "tbl_review", indexes = {
         @Index(name = "idx_review_product", columnList = "product_pno")
 })
 public class Review {
 
-    @Id
+    @Id //댓글 번호가 pk
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rno;
 
@@ -18,7 +19,9 @@ public class Review {
 
     private int score;
 
-    @ManyToOne(fetch = FetchType.LAZY) //product가 필요하기 전까진 안가져올꺼야..
+    //다대일 관계: 댓글은 하나의 제품에 속한다
+    //FetchType.LAZY: product 필드는 필요할 때만 로드됨(성능 최적화를 위해)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
 }
