@@ -34,6 +34,10 @@ public class Product {
     @BatchSize(size = 100)
     private Set<String> tags = new HashSet<>();
 
+    @ElementCollection
+    @CollectionTable(name = "tbl_product_img")
+    private Set<ContentImage> images = new HashSet<>();
+
     public void addTag(String tag) {
         tags.add(tag);
     }
